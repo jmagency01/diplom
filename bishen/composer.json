@@ -1,0 +1,16 @@
+{
+    "name": "admin/bishen",
+    "authors": [
+        {
+            "name": "Vladislav Kalinin",
+            "email": "vladislav@mail.ru"
+        }
+    ],
+    "require": { "nikic/fast-route": "^2.0@dev"
+    },
+    "autoload":{
+        "psr-4": {
+            "Vlad\\Bishen\\": "private/"
+        }
+    }
+}

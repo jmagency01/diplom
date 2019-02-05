@@ -1,0 +1,67 @@
+{
+  "urls": {
+    "base": {
+      "path":"/",
+      "controller":"Vlad\\Bishen\\Controllers\\IndexController::indexAction",
+      "method": "GET"
+    },
+
+    "findprinter": {
+        "path":"/findprinter",
+        "controller":"Vlad\\Bishen\\Controllers\\SearchController::printerAction",
+        "method": "GET"
+    },
+
+    "createorder": {
+      "path":"/createorder",
+      "controller":"Vlad\\Bishen\\Controllers\\SendController::createorderAction",
+      "method": "GET"
+    },
+    "findorder": {
+      "path":"/findorder",
+      "controller":"Vlad\\Bishen\\Controllers\\SearchController::findorderAction",
+      "method": "GET"
+    },
+    "aboutprint": {
+      "path":"/aboutprint",
+      "controller":"Vlad\\Bishen\\Controllers\\BlogController::aboutprintAction",
+      "method": "GET"
+    },
+    "aboutus": {
+      "path":"/aboutus",
+      "controller":"Vlad\\Bishen\\Controllers\\BlogController::aboutusAction",
+      "method": "GET"
+    },
+    "auth": {
+      "path":"/auth",
+      "controller":"Vlad\\Bishen\\Controllers\\AuthController::aboutusAction",
+      "method": "GET"
+    },
+
+    "login":{
+      "path": "/account/login",
+      "controller": "Vlad\\Bishen\\Controllers\\AuthController::userCheckAction",
+      "method": "POST"
+    },
+
+    "registcompany": {
+      "path":"/regcompany",
+      "controller":"Vlad\\Bishen\\Controllers\\AuthController::registcAction",
+      "method": "GET"
+    },
+
+    "registercompany": {
+      "path":"/addcompany",
+      "controller":"Vlad\\Bishen\\Controllers\\AuthController::registercAction",
+      "method": "GET"
+    },
+
+    "register":{
+      "path": "/account/regist",
+      "controller": "Vlad\\Bishen\\Controllers\\AuthController::registAction",
+      "method": "POST"
+    }
+
+  }
+
+}
