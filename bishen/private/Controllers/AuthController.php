@@ -9,8 +9,7 @@ namespace Vlad\Bishen\Controllers;
 use Vlad\Bishen\Base\Controller;
 use Vlad\Bishen\Base\DBConnection;
 use Vlad\Bishen\Models\AccountModel;
-
-require 'rb.php';
+use Vlad\Bishen\Base\Session;
 
 class AuthController extends Controller
 {
@@ -22,10 +21,47 @@ class AuthController extends Controller
         $this->accountModel = new AccountModel();
     }
 
-    public function registAction()
+
+    public function authAction()
     {
         $data = $_POST;
+        if (trim($data['name']) == '') {
+            $errors[] = 'Введите логин';
+        }if (trim($data['pwd']) == '') {
+        $errors[] = 'Введите пароль';
+    }
 
+        if ($this->accountModel->loginExists($data)) {
+            $errors = array();
+            if(password_verify($data['pwd'], $data-> pwd)){
+                $_SESSION['logged_user']= $data;
+                echo "<script>alert(\"Вы успешно авторизировались.Можете продолжить работу\");</script>";
+            }else{
+                $errors[] = 'Неверно введен пароль!';
+            }
+        } return parent::generateResponse('index_view.php', ['errors'=>$errors]);
+    }
+
+    public function userCheckAction($request)
+    {
+        $postData = $request->post();
+        $requestForm = $this->accountModel->usersData();
+        $type = $this->accountModel->checkLogin($requestForm, $postData);
+        return parent::generateAjaxResponse($type);
+    }
+
+
+
+    public function unsetAction()
+    {
+        unset($_SESSION['logget_user']);
+        header('Location:/');
+}
+
+    public function registAction()
+    {
+
+        $data = $_POST;
 
         if (trim($data['name']) == '') {
             $errors[] = 'Введите логин';
@@ -51,11 +87,11 @@ class AuthController extends Controller
             echo "<script>alert(\"Спасибо за регистрацию на сайте. Вы будете перенаправлены на страницу авторизации.\");</script>";
             return parent::generateResponse('index_view.php');
         }
-        echo "<script>alert(\"Заполните все данные\");</script>";
-        /*return parent::generateResponse('index_view.php', ['errors'=>$errors]);}*/
+
+        return parent::generateResponse('index_view.php', ['errors'=>$errors]);}
 
 
-    }
+
     public function registcAction()
     {
         $title = 'Регистрация компании';
@@ -67,9 +103,8 @@ class AuthController extends Controller
     }
 
     public function registercAction()
-    {
+    {   session_start();
         $data = $_POST;
-        if(isset($_POST['log_c'])){
 
         if (trim($data['name_c']) == '') {
             $errors[] = 'Заполните название компании';
@@ -100,7 +135,6 @@ class AuthController extends Controller
             $errors[] = 'Пароли не совпадают';
         }
 
-
         if ($this->accountModel->loginExists($data)) {
             $errors[] = 'Пользователь с такими данными существует';
         }
@@ -113,8 +147,7 @@ class AuthController extends Controller
         }
         echo "<script>alert(\"Заполните все данные\");</script>";
             return parent::generateResponse('index_view.php', ['errors' => $errors]);
-    }
-        return parent::generateResponse('form-reg-company_view.php');
+
     }
 }
 

@@ -39,8 +39,8 @@
     },
 
     "login":{
-      "path": "/account/login",
-      "controller": "Vlad\\Bishen\\Controllers\\AuthController::userCheckAction",
+      "path": "/login",
+      "controller": "Vlad\\Bishen\\Controllers\\AuthController::authAction",
       "method": "POST"
     },
 
@@ -53,7 +53,7 @@
     "registercompany": {
       "path":"/addcompany",
       "controller":"Vlad\\Bishen\\Controllers\\AuthController::registercAction",
-      "method": "GET"
+      "method": "POST"
     },
 
     "register":{

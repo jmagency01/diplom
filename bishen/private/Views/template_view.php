@@ -29,7 +29,15 @@
                 <div class="dis"><a class="alink" href="/findorder">Найти заказ</a></div>
                 <div class="dis"><a class="alink" href="/aboutprint">Все о печати</a></div>
                 <div class="dis"><a class="alink" href="/aboutus">О проекте</div>
+
+                <?php if (isset($_SESSION['logged_user'])) : ?>
+                    Авторизован
+                    <hr> Добро пожаловать, <?php echo $_SESSION['logged_user']->name; ?>
+                    <a href="/logout">Выйти</a>
+                <?php else : ?>
                 <div class="dis"><a class="alink" href="#openModal">Вход /</a> <a class="alink" href="#openModal2"> Регистрация</a></div>
+                <?php endif; ?>
+
                 <div class="r7 justify dis2 flex-5 align-menu mini-menu"><img class="" src="/IMG/menu.svg">
 
                     <div class="block-menu">
@@ -94,8 +102,8 @@
             </div>
             <div class="modal-body">
 
-                <form action="/auth/Login" method="post">
-                    <div><input class="text-field" type="text" name="name" placeholder="Логин или e-mail" value="<?php echo @$data['name']; ?>"></div>
+                <form action="/login" method="post" name ="do_login">
+                    <div><input class="text-field" type="text" name="name" placeholder="Логин или e-mail" value="<?php echo @$data['name']; ?><?php echo @$data['name_с']; ?>"></div>
                     <div><input class="text-field" name="pwd" type="password" placeholder="Пароль" required ></div>
                     <a class="padding" href="#openModal2">Нет Личного Кабинета? Зарегистрируйся! </a>
                     <div class="justify padding"> <input class="butchoice2 " type="submit" value="Войти" name="do_login"></div></form>
@@ -137,7 +145,7 @@
             <form name="MyForm" method="post" id="ajax_form" action="/account/regist"><!--Атрибут action остается пустым-->
                 <input name="name" type="text" class="text-field" placeholder="Ваше имя" value="<?php echo @$data['name']; ?>"><br>
                 <input name="email" type="email" class="text-field" placeholder="Email" value="<?php echo @$data['email']; ?>"><br>
-                <input name="phone" class="text-field mask_phone" placeholder="Введите ваш телефон" value="<?php echo @$data['pwd']; ?>"><br>
+                <input name="phone" class="text-field mask_phone" placeholder="Введите ваш телефон" value="<?php echo @$data['phone']; ?>"><br>
                 <input name="pwd" type="password" class="text-field" placeholder="Придумайте пароль" value="<?php echo @$data['pwd']; ?>"><br>
                 <input name="pwd2" type="password" class="text-field" placeholder="Повторите пароль" /><br>
                 <div class="but-fip">

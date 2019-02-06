@@ -30,6 +30,23 @@ class AccountModel
     }
 
 
+    public function checkLogin($get, $post){
+        // Проверка введенных данных на соответствие
+        $email = $post['email'];
+        $pwd = $post['pwd'];
+        foreach ($get as $key1 => $value) {
+            if ($value['email'] === strtolower($email) && password_verify($pwd, $value['password'])) {
+                $_SESSION['auth'] = true;
+                $_SESSION['login'] = $value['userName'];
+                return self::YOU_WELCOME;
+            }
+        }
+        return self::TRY_AGAIN;
+    }
+
+
+
+
     public function addUser($userData){
 
         $sql = "INSERT INTO users (user_name, phone, email, pwd)
@@ -50,8 +67,8 @@ class AccountModel
     }
     public function addCompany($companyData)
     {
-        $sql = "INSERT INTO company (name_c, disc_c, site_c check_c, layer_a, ogrn, phone_connect, email_c, cs, manager, psd)
-              VALUES (:name_c, :dick_c, :site_c, :check_c, :layer_a, :ogrn, :phone_connect, :email_c, :cs, :manager, :psd)";
+        $sql = "INSERT INTO company (name_c, disc_c, site_c, check_c, layer_a, ogrn, phone_con, email_c, cs, manager, psd)
+              VALUES (:name_c, :disc_c, :site_c, :check_c, :layer_a, :ogrn, :phone_con, :email_c, :cs, :manager, :psd)";
         $params = [
             'name_c'=>$companyData['name_c'],
             'disc_c'=>$companyData['disc_c'],
@@ -59,7 +76,7 @@ class AccountModel
             'check_c'=>$companyData['check_c'],
             'layer_a'=>$companyData['layer_a'],
             'ogrn'=>$companyData['ogrn'],
-            'phone_connect'=>$companyData['phone_connect'],
+            'phone_con'=>$companyData['phone_con'],
             'email_c'=>$companyData['email_c'],
             'cs'=>$companyData['cs'],
             'manager'=>$companyData['manager'],

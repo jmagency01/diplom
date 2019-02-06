@@ -11,6 +11,7 @@ class IndexController extends Controller
 
         $data = [
             'title'=>$title,
+
             'auth'=>isset($_SESSION['auth']),
             'login'=>$_SESSION['login']
         ];
