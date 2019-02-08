@@ -11,6 +11,8 @@
     <![endif]-->
     <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
+
 
     <script src="https://unpkg.com/imask"></script>
     <script src="/phone_mask.js"></script>
@@ -22,19 +24,21 @@
         <div class="flex-1 fon1 justify "><a href="\"> <img class="img-logo" src="/IMG/logo.png"></a></div>
         <div class=" flex-5 column-container "><div class="flex-1 justify fon1">
                 <div class="ind dis"><a class="alink" href="/"> Главная</a></div>
-                <div class="fri dis"><a class="alink" href="/findprinter">Найти печатника</a>
-                </div>
+                <!--<div class="fri dis"><a class="alink" href="/findprinter">Найти печатника</a>
+                </div>-->
                 <div class="fri dis"><a class="alink" href="/createorder"> Создать заказ</a></div>
 
                 <div class="dis"><a class="alink" href="/findorder">Найти заказ</a></div>
                 <div class="dis"><a class="alink" href="/aboutprint">Все о печати</a></div>
                 <div class="dis"><a class="alink" href="/aboutus">О проекте</div>
 
-                <?php if (isset($_SESSION['logged_user'])) : ?>
-                    Авторизован
-                    <hr> Добро пожаловать, <?php echo $_SESSION['logged_user']->name; ?>
-                    <a href="/logout">Выйти</a>
-                <?php else : ?>
+                <?php if (isset($_SESSION['auth'])): ?>
+                <ul> <li><a href="#" class="authorization"><?php echo "Привет, ". $_SESSION['user_name']; ?></a>
+                    <li><a href="#">Личный кабинет</a></li>
+                            <li><a href="/out">Выйти</a> </li>
+                        </ul>
+                    </li>
+                <?php else: ?>
                 <div class="dis"><a class="alink" href="#openModal">Вход /</a> <a class="alink" href="#openModal2"> Регистрация</a></div>
                 <?php endif; ?>
 
@@ -93,6 +97,8 @@
 
 
 
+
+
 <div id="openModal" class="modal">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -102,11 +108,48 @@
             </div>
             <div class="modal-body">
 
-                <form action="/login" method="post" name ="do_login">
-                    <div><input class="text-field" type="text" name="name" placeholder="Логин или e-mail" value="<?php echo @$data['name']; ?><?php echo @$data['name_с']; ?>"></div>
+                <form action="/authorization" method="post" name ="do_login">
+                    <div><input class="text-field" type="text" name="email" placeholder="E-mail" value="<?php /*echo @$data['name']; */?><?php /*echo @$data['name_с']; */?>"></div>
                     <div><input class="text-field" name="pwd" type="password" placeholder="Пароль" required ></div>
-                    <a class="padding" href="#openModal2">Нет Личного Кабинета? Зарегистрируйся! </a>
-                    <div class="justify padding"> <input class="butchoice2 " type="submit" value="Войти" name="do_login"></div></form>
+                    <a class="padding" href="#openModal2">Нет Личного Кабинета? Зарегистрируйся! </a><a href="/forgot">Забыл пароль?</a>
+                    <?php if($answer == "EMAIL_ERROR") :?>
+                        <?php echo 'email error';?>
+                    <?php elseif($answer == "PSW_ERROR") :?>
+                        <?php echo 'password error';?>
+                    <?php endif; ?>
+                    <div class="justify padding"> <input class="butchoice2 " type="submit" value="Войти">
+
+
+                            </div>  <!--final links inside authorization-->
+
+                    </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -170,6 +213,6 @@
         });
     }
 </script>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="/js/users.js"></script>
 </body>
 </html>

@@ -1,14 +1,25 @@
-<div class="flex-4 justify padding">
+<div class="flex-6 justify padding">
 
 <div id="map"></div>
 
 
-</div><div class="flex-2">
-    <div class="cart-company">
-        <h5>Первый</h5>
-        <p><?php $data['text'] ?>ВТОРОЙ</p>
-        <img src="/IMG/logo_mini.jpg">
-        <?php echo 'теги услуг' ?>
-        <?php $data['phone_company'] ?>
-    </div></div><script src="js/map.js"></script>
+
+
+<div class="cart"> <!--class="flex-2 tab-flex"-->
+    <ul>
+        <?php foreach ($companies as $company): ?>
+            <li>
+                <div class="bold"><?php echo $company['name_c']?></div>
+                <div><?php echo $company['disc_c']?></div>
+                <div><?php echo $company['check_c[flag[]]']?></div>
+                <div><a href="http://<?php echo $company['site_c']?>" rel="external"> <?php echo $company['site_c']?></a></div>
+
+            </li><hr>
+        <?php endforeach; ?>
+    </ul>
+</div>
+
+
+
+<script src="js/map.js"></script></div>
 

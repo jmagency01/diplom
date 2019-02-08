@@ -15,6 +15,17 @@ use Vlad\Bishen\Base\DBConnection;
 
 class AccountModel
 {
+    const USER_ADDED = "USER_ADDED";
+    const USER_EXISTS = "USER_EXISTS";
+    const LOGIN_EXISTS = "LOGIN_EXISTS";
+    const EMAIL_ERROR = "EMAIL_ERROR";
+    const PWD_ERROR = "PWD_ERROR";
+    const USER_AUTH = "USER_AUTH";
+    const DB_ERROR = "DB_ERROR";
+    const COUNTRY_EMPTY = "COUNTRY_EMPTY";
+    const PWD_WRONG = "PWD_WRONG";
+
+
     private $db;
     public function __construct()
     {
@@ -28,24 +39,68 @@ class AccountModel
         $answer = $this->db->execute($sql, $params, false);
         return $answer; // true если существует
     }
+    public function companyExists($companyData){
+        $sql = 'SELECT email_c FROM company WHERE email_c=:email_c';
+        $params = ['email_c'=>$companyData['email_c']];
 
-
-    public function checkLogin($get, $post){
-        // Проверка введенных данных на соответствие
-        $email = $post['email'];
-        $pwd = $post['pwd'];
-        foreach ($get as $key1 => $value) {
-            if ($value['email'] === strtolower($email) && password_verify($pwd, $value['password'])) {
-                $_SESSION['auth'] = true;
-                $_SESSION['login'] = $value['userName'];
-                return self::YOU_WELCOME;
-            }
-        }
-        return self::TRY_AGAIN;
+        $answer = $this->db->execute($sql, $params, false);
+        return $answer; // true если существует
     }
 
+    public function recmAction($request){
+        $postData = $request->post();
+        $not = $this->AccountModel->recmData($postData);
+        $title = 'Авторизация';
+        $view = 'index_view.php';
+        $data = [
+            'title'=>$title,
+            'not'=>$not
+        ];
+        return parent::generateResponse($view, $data, $template='index_view.php');
+    }
 
+    public function authUser($userData)
+    {
+        $sql = "SELECT email, pwd, user_name FROM users 
+      WHERE email=:email";
+        $params = [
+            'email' => $userData['email']
+        ];
 
+        $statement = $this->db->execute($sql, $params, false);
+//        return $statement['email'];
+
+        if (!$statement) {
+            return self::EMAIL_ERROR;
+        } else {
+            $hash = $statement['pwd'];
+            if (!password_verify($userData['pwd'], $hash)) {
+                return self::PWD_ERROR;
+            }
+            $_SESSION['auth'] = true;
+            $_SESSION['user_name'] = $statement['user_name'];
+
+            return self::USER_AUTH;
+        }
+    }
+
+    public function recmData($userData){
+        if($userData == NULL){
+            $not = FALSE;
+        }else {
+            $sql = 'SELECT email FROM users WHERE email =:email';
+            $params = [
+                'email'=>$userData['emailRec']
+            ];
+            $result = $this->db->execute($sql, $params, false);
+            if(!$result){
+                $not = "2";
+            } else {
+                $not = "3";
+            }
+        }
+        return $not;
+    }
 
     public function addUser($userData){
 
@@ -63,6 +118,8 @@ class AccountModel
         if($result === false) {
             return 'errors';
         }
+        $_SESSION['auth'] = true;
+        $_SESSION['user_name'] = $userData['user_name'];
         return 'added';
     }
     public function addCompany($companyData)
@@ -83,12 +140,13 @@ class AccountModel
             'psd'=>password_hash($companyData['psd'], PASSWORD_DEFAULT)
         ];
 
-
         $result = $this->db->execPrepare($sql, $params);
 
         if($result === false) {
             return 'errors';
         }
+        $_SESSION['auth'] = true;
+        $_SESSION['name_c'] = $companyData['name_c'];
         return 'added';
     }
 

@@ -96,7 +96,8 @@ body {
 .alink {
     color: white;
     text-decoration: none;
-
+}
+.blog{
 
 }
 
@@ -292,7 +293,6 @@ body {
     text-decoration: none;
     color:black;
     font-size: 12pt;
-
 }
 
 .imgloco{
@@ -303,7 +303,9 @@ body {
     width: 15%;
     height: auto;
 }
-
+.tab-flex{
+    display: table;
+}
 table {
     border-spacing: 0 10px;
     font-family: 'Open Sans', sans-serif;
@@ -321,6 +323,11 @@ th:first-child {
 }
 th:last-child {
     border-right: none;
+}
+.cart {
+    width: 200px;
+    height: 75px;
+
 }
 td {
     vertical-align: middle;

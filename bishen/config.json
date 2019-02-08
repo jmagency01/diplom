@@ -32,15 +32,21 @@
       "controller":"Vlad\\Bishen\\Controllers\\BlogController::aboutusAction",
       "method": "GET"
     },
-    "auth": {
-      "path":"/auth",
-      "controller":"Vlad\\Bishen\\Controllers\\AuthController::aboutusAction",
-      "method": "GET"
-    },
+    "authorization":{
+      "path":"/authorization",
+      "controller":"Vlad\\Bishen\\Controllers\\AuthController::authorizationAction",
+      "method": "POST"
 
-    "login":{
-      "path": "/login",
-      "controller": "Vlad\\Bishen\\Controllers\\AuthController::authAction",
+    },
+    "out":{
+      "path":"/out",
+      "controller":"Vlad\\Bishen\\Controllers\\AuthController::outAction",
+      "method": "GET"
+
+    },
+    "recoveryM":{
+      "path":"/forgot",
+      "controller":"Vlad\\Bishen\\Controllers\\AuthController::recmAction",
       "method": "POST"
     },
 

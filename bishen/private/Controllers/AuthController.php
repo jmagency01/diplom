@@ -6,27 +6,40 @@
  * Time: 13:36
  */
 namespace Vlad\Bishen\Controllers;
+use phpDocumentor\Reflection\Types\Parent_;
 use Vlad\Bishen\Base\Controller;
 use Vlad\Bishen\Base\DBConnection;
+use Vlad\Bishen\Base\Response;
 use Vlad\Bishen\Models\AccountModel;
 use Vlad\Bishen\Base\Session;
+
 
 class AuthController extends Controller
 {
 
     private $accountModel;
+    private  $session;
 
     public function __construct()
     {
         $this->accountModel = new AccountModel();
+        $this->session = new Session();
+
+    }
+    public function authorizationAction($request){
+        $postData = $request->post();
+        $answer = $this->accountModel->authUser($postData);
+        if ($answer == 'USER_AUTH'){
+            return parent::generateResponse($answer);
+        }
+
+
     }
 
 
-    public function authAction()
-    {
-        $data = $_POST;
-        if (trim($data['name']) == '') {
-            $errors[] = 'Введите логин';
+
+        /*if (trim($data['email']) == '') {
+            $errors[] = 'Введите почту';
         }if (trim($data['pwd']) == '') {
         $errors[] = 'Введите пароль';
     }
@@ -40,7 +53,7 @@ class AuthController extends Controller
                 $errors[] = 'Неверно введен пароль!';
             }
         } return parent::generateResponse('index_view.php', ['errors'=>$errors]);
-    }
+    }*/
 
     public function userCheckAction($request)
     {
@@ -49,6 +62,7 @@ class AuthController extends Controller
         $type = $this->accountModel->checkLogin($requestForm, $postData);
         return parent::generateAjaxResponse($type);
     }
+
 
 
 
@@ -103,10 +117,9 @@ class AuthController extends Controller
     }
 
     public function registercAction()
-    {   session_start();
-        $data = $_POST;
+    { $data = $_POST;
 
-        if (trim($data['name_c']) == '') {
+       /* if (trim($data['name_c']) == '') {
             $errors[] = 'Заполните название компании';
         }
             if (trim($data['site_c']) == '') {
@@ -133,9 +146,9 @@ class AuthController extends Controller
         }
         if ($data['psd2'] != $data['psd']) {
             $errors[] = 'Пароли не совпадают';
-        }
+        }*/
 
-        if ($this->accountModel->loginExists($data)) {
+        if ($this->accountModel->companyExists($data)) {
             $errors[] = 'Пользователь с такими данными существует';
         }
         if (empty($errors)) {
@@ -146,8 +159,19 @@ class AuthController extends Controller
             return parent::generateResponse('index_view.php');
         }
         echo "<script>alert(\"Заполните все данные\");</script>";
-            return parent::generateResponse('index_view.php', ['errors' => $errors]);
+            return parent::generateResponse('index_view.php');
 
+    }
+    public function outAction($request){
+        $params = $request->params();
+        $out = $params['out'];
+        if($out){
+            $this->session->close();
+            //header("Location:/");
+        }
+        $response = new Response();
+        $response->setHeaders(["Location:/"]);
+        return $response;
     }
 }
 
