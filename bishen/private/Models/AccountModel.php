@@ -68,7 +68,6 @@ class AccountModel
         ];
 
         $statement = $this->db->execute($sql, $params, false);
-//        return $statement['email'];
 
         if (!$statement) {
             return self::EMAIL_ERROR;
@@ -77,9 +76,35 @@ class AccountModel
             if (!password_verify($userData['pwd'], $hash)) {
                 return self::PWD_ERROR;
             }
+
             $_SESSION['auth'] = true;
             $_SESSION['user_name'] = $statement['user_name'];
+            echo "<script>alert(\"Вы успешно авторизировались на сайте.\");</script>";
 
+            return self::USER_AUTH;
+        }
+    }
+
+
+    public function authCompany($userData)
+    {
+        $sql = "SELECT email_c, psd, name_c FROM company 
+      WHERE email_c=:email_c";
+        $params = [
+            'email_c' => $userData['email_c']
+        ];
+
+        $statement = $this->db->execute($sql, $params, false);
+
+        if (!$statement) {
+            return self::EMAIL_ERROR;
+        } else {
+            $hash = $statement['psd'];
+            if (!password_verify($userData['psd'], $hash)) {
+                return self::PWD_ERROR;
+            }
+            $_SESSION['auth'] = true;
+            $_SESSION['name_c'] = $statement['name_c'];
             return self::USER_AUTH;
         }
     }
@@ -124,13 +149,12 @@ class AccountModel
     }
     public function addCompany($companyData)
     {
-        $sql = "INSERT INTO company (name_c, disc_c, site_c, check_c, layer_a, ogrn, phone_con, email_c, cs, manager, psd)
-              VALUES (:name_c, :disc_c, :site_c, :check_c, :layer_a, :ogrn, :phone_con, :email_c, :cs, :manager, :psd)";
+        $sql = "INSERT INTO company (name_c, disc_c, site_c, layer_a, ogrn, phone_con, email_c, cs, manager, psd)
+              VALUES (:name_c, :disc_c, :site_c, :layer_a, :ogrn, :phone_con, :email_c, :cs, :manager, :psd)";
         $params = [
             'name_c'=>$companyData['name_c'],
             'disc_c'=>$companyData['disc_c'],
             'site_c'=>$companyData['site_c'],
-            'check_c'=>$companyData['check_c'],
             'layer_a'=>$companyData['layer_a'],
             'ogrn'=>$companyData['ogrn'],
             'phone_con'=>$companyData['phone_con'],

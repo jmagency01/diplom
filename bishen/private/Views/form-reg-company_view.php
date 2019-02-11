@@ -24,7 +24,7 @@
                  но мне нужно чтобы после выбора услуги выскакивал список продуктов данной категории, к примеру:
                  цифровая печать(выбор)-выскакивает список: визитки, листовки, флаеры и т.д. -->
 
-                <div><input class="text-field" type="text" placeholder="Юридический адрес организации" required name="layer_a" value="<?php echo @$data['layer_a']; ?>"></div>
+                <div><input class="text-field" type="text" placeholder="Фактический адрес организации" required name="layer_a" value="<?php echo @$data['layer_a']; ?>"></div>
                 <div><input class="text-field" type="text" placeholder="ОГРН/ИНН вашей организации" required name="ogrn" value="<?php echo @$data['ogrn']; ?>"></div>
                 <div><input class="text-field mask_phone" type="text" placeholder="Телефон организации(для клиентов)" required name="phone_con" value="<?php echo @$data['phone_con']; ?>"></div>
                 <div><input class="text-field" type="email" placeholder="Почтовый ящик для приема заказов" required name="email_c" value="<?php echo @$data['email_c']; ?>"></div>

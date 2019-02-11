@@ -32,10 +32,14 @@ class AuthController extends Controller
         if ($answer == 'USER_AUTH'){
             return parent::generateResponse($answer);
         }
-
-
     }
-
+    public function authorizationсAction($request){
+        $postData = $request->post();
+        $answer = $this->accountModel->authCompany($postData);
+        if ($answer == 'USER_AUTH'){
+            return parent::generateResponse($answer);
+        }
+    }
 
 
         /*if (trim($data['email']) == '') {
@@ -167,11 +171,21 @@ class AuthController extends Controller
         $out = $params['out'];
         if($out){
             $this->session->close();
-            //header("Location:/");
         }
         $response = new Response();
         $response->setHeaders(["Location:/"]);
         return $response;
+    }
+    public function recmAction($request){
+        $postData = $request->post();
+        $not = $this->accountModel->recmData($postData);
+        $title = 'Потеряшка';
+        $view = 'recovery.php';
+        $data = [
+            'title'=>$title,
+            'not'=>$not
+        ];
+        return parent::generateResponse($view, $data);
     }
 }
 

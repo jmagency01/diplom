@@ -34,8 +34,6 @@ class Session
 
     public function close(){
         session_destroy();
-//        session_unset();
-//        unset($_SESSION); можно ли так делать?
         unset($this->session);
     }
 }

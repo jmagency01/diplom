@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width" initial-scale="1">
     <title><?php echo $title ?></title>
-    <link rel="stylesheet" href="/CSS/flex.css">
+    <link rel="stylesheet" href="/CSS/flex.css"><!--
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
-    <!--[if lte IE 8]>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" />
-    <![endif]-->
-    <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>-->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/leaflet.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
 <!--    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>-->
 
 
@@ -30,14 +31,13 @@
 
                 <div class="dis"><a class="alink" href="/findorder">Найти заказ</a></div>
                 <div class="dis"><a class="alink" href="/aboutprint">Все о печати</a></div>
-                <div class="dis"><a class="alink" href="/aboutus">О проекте</div>
+                <div class="dis"><a class="alink" href="/aboutus">О проекте</a></div>
 
                 <?php if (isset($_SESSION['auth'])): ?>
-                <ul> <li><a href="#" class="authorization"><?php echo "Привет, ". $_SESSION['user_name']; ?></a>
+                <ul> <li><?php echo "Привет, ". $_SESSION['user_name']; ?></li>
                     <li><a href="#">Личный кабинет</a></li>
                             <li><a href="/out">Выйти</a> </li>
                         </ul>
-                    </li>
                 <?php else: ?>
                 <div class="dis"><a class="alink" href="#openModal">Вход /</a> <a class="alink" href="#openModal2"> Регистрация</a></div>
                 <?php endif; ?>
@@ -58,25 +58,19 @@
         </div>
     </div>
 
-
     <div class="row-container">
 
-        <div class="flex-6"><form action="search.php"></form>
+        <!--<div class="flex-6"><form action="search.php"></form>
             <input  class="inallblock" type="search" placeholder="Здесь можно написать то, что вы ищете">
-            <!--<input type="submit" class="ico" >-->
-        </div>
-    </div>
-
-
-
-    <div style="color: red; font-size: 14px; padding: 20px; margin: 0 auto; display: block; width:400px;">
-
+            <input type="submit" class="ico" >
+        </div>-->
+        <div class="flex-6 size-body"><?php include_once $view;?></div>
     </div>
 
 
 
 
-    <?php include_once $view;?>
+
 
 
     <div class="flex-2 column-container list-base dis">
@@ -117,42 +111,46 @@
                     <?php elseif($answer == "PSW_ERROR") :?>
                         <?php echo 'password error';?>
                     <?php endif; ?>
+                    <div><a href="#openModal3">Авторизироваться как компания</a> </div>
                     <div class="justify padding"> <input class="butchoice2 " type="submit" value="Войти">
 
 
                             </div>  <!--final links inside authorization-->
 
                     </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 
+<div id="openModal3" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Вход в личный кабинет компании</h3>
+                <a href="#close" title="Close" class="close">×</a>
+            </div>
+            <div class="modal-body">
+
+                <form action="/authorization_с" method="post" name ="do_login">
+                    <div><input class="text-field" type="text" name="email" placeholder="Введите E-mail компании" value="<?php /*echo @$data['name']; */?><?php /*echo @$data['name_с']; */?>"></div>
+                    <div><input class="text-field" name="pwd" type="password" placeholder="Пароль аккаунта компании" required ></div>
+                    <a class="padding" href="#openModal2">Нет Личного Кабинета? Зарегистрируйся! </a><a href="/forgot">Забыл пароль?</a>
+                    <?php if($answer == "EMAIL_ERROR") :?>
+                        <?php echo 'email error';?>
+                    <?php elseif($answer == "PSW_ERROR") :?>
+                        <?php echo 'password error';?>
+                    <?php endif; ?>
+                    <div><a href="#openModal">Авторизироваться как пользователь</a> </div>
+                    <div class="justify padding"> <input class="butchoice2 " type="submit" value="Войти">
 
 
+                    </div>  <!--final links inside authorization-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                </form>
             </div>
         </div>
     </div>
